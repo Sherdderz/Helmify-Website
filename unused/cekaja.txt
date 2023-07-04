@@ -1,0 +1,112 @@
+<?php 
+if (isset($_POST['verification'])) { 
+ 	$nama_foto = $_FILES['bukti']['name'];
+ 	$lokasi = $_FILES['bukti']['tmp_name'];
+ 	move_uploaded_file($lokasi, "../foto".$nama_foto);
+
+ 	$nama = $_POST['nama'];
+ 	$email = $_POST['email'];
+ 	$telp = $_POST['telp'];
+	$alamat = $_POST['alamat'];
+	$pembayaran = $_POST['pembayaran'];
+	$bukti = $_POST['bukti'];
+
+ 	$save = mysqli_query($conn, "INSERT INTO 'konfirmasi'('nama', 'email', 'telp', 
+	 'alamat', 'bukti') 
+ 		VALUES('$nama','$email','$telp','$alamat','$pembayaran','$bukti')");
+ 		?>
+
+<div class="alert alert-info">Data Tersimpan</div>
+<meta http-equiv = "refresh" content = 'location="index.php"'>
+<?php } ?>
+
+
+
+
+<?php
+try {
+   // buat koneksi dengan database
+   $dbh = new PDO('mysql:host=localhost;dbname=helmify', "root", "");
+  
+   // set error mode
+   $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+   // siapkan query (prepare)
+   $stmt = $dbh->prepare('INSERT INTO konfirmasi (nama, email, telp, alamat, pembayaran, bukti) 
+	VALUES
+   (:nama, :email, :telp, :alamat, :pembayaran, :bukti)');
+  
+   // hubungkan data dengan variabel (bind)
+   $stmt->bindParam(':nama', $nama);
+   $stmt->bindParam(':email', $email);
+   $stmt->bindParam(':telp', $telp);
+   $stmt->bindParam(':alamat', $alamat);
+   $stmt->bindParam(':pembayaran', $pembayaran);
+   $stmt->bindParam(':bukti', $bukti);
+                 
+   // siapkan "data" query
+   $nama;
+   $email;
+   $telp;
+   $alamat;
+   $pembayaran;
+   $bukti;
+  
+   // jalankan query (execute)
+   $stmt->execute();
+  
+   // tampilkan hasil proses query
+   echo $stmt->rowCount()." data berhasil ditambahkan";
+  
+   // hapus koneksi
+   $dbh = null;
+ 
+} catch (PDOException $e) {
+   // tampilkan pesan kesalahan jika koneksi gagal
+   print "koneksi/query bermasalah: " . $e->getMessage() . "<br/>";
+   die();
+}
+
+
+?>
+
+
+<?php
+try {
+   // buat koneksi dengan database
+   $dbh = new PDO('mysql:host=localhost;dbname=helmify', "root", "");
+  
+   // set error mode
+   $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
+   // siapkan query (prepare)
+   $stmt = $dbh->prepare('INSERT INTO konfirmasi (nama, email, telp, alamat, pembayaran, bukti) 
+	VALUES
+   (:nama, :email, :telp, :alamat, :pembayaran, :bukti)');
+  
+   // hubungkan data dengan variabel (bind)
+   $stmt->bindParam(':nama', $_POST['nama']);
+   $stmt->bindParam(':email', $_POST['email']);
+   $stmt->bindParam(':telp', $_POST['telp']);
+   $stmt->bindParam(':alamat', $_POST['alamat']);
+   $stmt->bindParam(':pembayaran', $_POST['pembayaran']);
+   $stmt->bindParam(':bukti', $_POST['bukti']);
+                 
+  
+   // jalankan query (execute)
+   $stmt->execute();
+  
+   // tampilkan hasil proses query
+   echo $stmt->rowCount()." data berhasil ditambahkan";
+  
+   // hapus koneksi
+   $dbh = null;
+ 
+} catch (PDOException $e) {
+   // tampilkan pesan kesalahan jika koneksi gagal
+   print "koneksi/query bermasalah: " . $e->getMessage() . "<br/>";
+   die();
+}
+
+
+?>
